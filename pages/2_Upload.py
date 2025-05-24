@@ -6,7 +6,7 @@ import time
 from autoviz.AutoViz_Class import AutoViz_Class
 import matplotlib.pyplot as plt
 from datetime import datetime
-from streamlit_shadcn_ui import tabs
+# from streamlit_shadcn_ui import tabs
 
 
 from fpdf import FPDF
@@ -522,99 +522,103 @@ else:
     
     st.markdown("### 🔄 Column Type Configuration")
     st.caption("Review and adjust detected column types below. Accurate column type detection improves the quality of analysis.")
+# Organize columns by type
+col_by_type = {"Datetime": [], "Numerical": [], "Categorical": [], "Boolean": []}
+for col, col_type in st.session_state.col_types.items():
+    if col_type in col_by_type:
+        col_by_type[col_type].append(col)
 
-    # Organize columns by type
-    col_by_type = {"Datetime": [], "Numerical": [], "Categorical": [], "Boolean": []}
-    for col, col_type in st.session_state.col_types.items():
-        if col_type in col_by_type:
-            col_by_type[col_type].append(col)
+# Use native Streamlit tabs
+tab_labels = ["Datetime Columns", "Numerical Columns", "Categorical Columns", "Boolean Columns"]
+tabs = st.tabs(tab_labels)
 
-    # Use streamlit-shadcn-ui tabs
-    tabs = tabs(
-        options=["Datetime Columns", "Numerical Columns", "Categorical Columns", "Boolean Columns"],
-        default_value="Datetime Columns",
-        key="column_tabs"
-    )
+new_types = {}
 
-    new_types = {}
+# Datetime Columns Tab
+with tabs[0]:
+    st.header("Datetime Columns")
+    if col_by_type["Datetime"]:
+        for col in col_by_type["Datetime"]:
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"**{col}**")
+                st.markdown(f"Sample: `{df[col].iloc[0] if not df[col].empty else 'N/A'}`")
+            with col2:
+                new_type = st.selectbox(
+                    "Type",
+                    options=["Datetime", "Numerical", "Categorical", "Boolean"],
+                    index=0,
+                    key=f"type_select_{col}"
+                )
+            st.divider()
+            new_types[col] = new_type
+    else:
+        st.info("No datetime columns detected.")
 
-    # Handle tab content dynamically
-    if tabs == "Datetime Columns":
-        if col_by_type["Datetime"]:
-            for col in col_by_type["Datetime"]:
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.markdown(f"**{col}**")
-                    st.markdown(f"Sample: `{df[col].iloc[0] if not df[col].empty else 'N/A'}`")
-                with col2:
-                    new_type = st.selectbox(
-                        "Type",
-                        options=["Datetime", "Numerical", "Categorical", "Boolean"],
-                        index=0,
-                        key=f"type_select_{col}"
-                    )
-                st.divider()
-                new_types[col] = new_type
-        else:
-            st.info("No datetime columns detected")
+# Numerical Columns Tab
+with tabs[1]:
+    st.header("Numerical Columns")
+    if col_by_type["Numerical"]:
+        for col in col_by_type["Numerical"]:
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"**{col}**")
+                st.markdown(f"Range: `{df[col].min()} - {df[col].max()}`")
+            with col2:
+                new_type = st.selectbox(
+                    "Type",
+                    options=["Datetime", "Numerical", "Categorical", "Boolean"],
+                    index=1,
+                    key=f"type_select_{col}"
+                )
+            st.divider()
+            new_types[col] = new_type
+    else:
+        st.info("No numerical columns detected.")
 
-    elif tabs == "Numerical Columns":
-        if col_by_type["Numerical"]:
-            for col in col_by_type["Numerical"]:
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.markdown(f"**{col}**")
-                    st.markdown(f"Range: `{df[col].min()} - {df[col].max()}`")
-                with col2:
-                    new_type = st.selectbox(
-                        "Type",
-                        options=["Datetime", "Numerical", "Categorical", "Boolean"],
-                        index=1,
-                        key=f"type_select_{col}"
-                    )
-                st.divider()
-                new_types[col] = new_type
-        else:
-            st.info("No numerical columns detected")
+# Categorical Columns Tab
+with tabs[2]:
+    st.header("Categorical Columns")
+    if col_by_type["Categorical"]:
+        for col in col_by_type["Categorical"]:
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"**{col}**")
+                unique_count = df[col].nunique()
+                st.markdown(f"Unique values: `{unique_count}`")
+            with col2:
+                new_type = st.selectbox(
+                    "Type",
+                    options=["Datetime", "Numerical", "Categorical", "Boolean"],
+                    index=2,
+                    key=f"type_select_{col}"
+                )
+            st.divider()
+            new_types[col] = new_type
+    else:
+        st.info("No categorical columns detected.")
 
-    elif tabs == "Categorical Columns":
-        if col_by_type["Categorical"]:
-            for col in col_by_type["Categorical"]:
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.markdown(f"**{col}**")
-                    unique_count = df[col].nunique()
-                    st.markdown(f"Unique values: `{unique_count}`")
-                with col2:
-                    new_type = st.selectbox(
-                        "Type",
-                        options=["Datetime", "Numerical", "Categorical", "Boolean"],
-                        index=2,
-                        key=f"type_select_{col}"
-                    )
-                st.divider()
-                new_types[col] = new_type
-        else:
-            st.info("No categorical columns detected")
+# Boolean Columns Tab
+with tabs[3]:
+    st.header("Boolean Columns")
+    if col_by_type["Boolean"]:
+        for col in col_by_type["Boolean"]:
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"**{col}**")
+                st.markdown(f"Values: `{df[col].unique().tolist()}`")
+            with col2:
+                new_type = st.selectbox(
+                    "Type",
+                    options=["Datetime", "Numerical", "Categorical", "Boolean"],
+                    index=3,
+                    key=f"type_select_{col}"
+                )
+            st.divider()
+            new_types[col] = new_type
+    else:
+        st.info("No boolean columns detected.")
 
-    elif tabs == "Boolean Columns":
-        if col_by_type["Boolean"]:
-            for col in col_by_type["Boolean"]:
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.markdown(f"**{col}**")
-                    st.markdown(f"Values: `{df[col].unique().tolist()}`")
-                with col2:
-                    new_type = st.selectbox(
-                        "Type",
-                        options=["Datetime", "Numerical", "Categorical", "Boolean"],
-                        index=3,
-                        key=f"type_select_{col}"
-                    )
-                st.divider()
-                new_types[col] = new_type
-        else:
-            st.info("No boolean columns detected")
 
     # Save button for column types
     if st.button("Save Column Type Changes", use_container_width=True):
