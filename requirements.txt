@@ -14,3 +14,4 @@ langchain-core
 langchain-google-genai
 google-generativeai
 sqlparse==0.5.1
+pandasql==0.7.3
