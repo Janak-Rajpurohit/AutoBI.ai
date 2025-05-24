@@ -1,0 +1,19 @@
+[theme]
+primaryColor = "#BCCCDC"       # Green primary buttons
+backgroundColor = "#F8FAFC"    # White background 
+secondaryBackgroundColor = "#9AA6B2"  # Light gray sidebar
+textColor = "#071952"          # Dark text for readability
+font = "sans serif"            # Modern font
+
+[server]
+headless = true
+port = 8501
+enableCORS = false
+enableXsrfProtection = true
+
+
+[ui]
+# Completely hide all default UI elements
+hideMenu = true
+hideToolbar = true
+hideTopBar = true              # Hides deploy button and settings

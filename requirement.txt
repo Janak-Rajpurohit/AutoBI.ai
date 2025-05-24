@@ -1,0 +1,5 @@
+pandas-profiling==3.6.6 
+pydantic==1.10.12
+streamlit-shadcn-ui
+streamlit-profiling
+pandas-profiling
