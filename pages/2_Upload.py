@@ -1,12 +1,11 @@
 import streamlit as st
 import pandas as pd
 # from pandas_profiling import ProfileReport
-from streamlit_pandas_profiling import st_profile_report
 import time
 from autoviz.AutoViz_Class import AutoViz_Class
 import matplotlib.pyplot as plt
 from datetime import datetime
-# from streamlit_shadcn_ui import tabs
+
 
 
 from fpdf import FPDF

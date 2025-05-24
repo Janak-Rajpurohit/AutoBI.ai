@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit_shadcn_ui as ui
 from streamlit_extras.switch_page_button import switch_page
 
 
