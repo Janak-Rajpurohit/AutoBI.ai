@@ -8,9 +8,9 @@ fpdf
 tensorflow==2.14.0
 scikit-learn
 plotly==5.24.1
-langchain==0.0.318
-langchain-community==0.0.20
-langchain-core==0.3.60
-langchain-google-genai==2.0.10
-google-generativeai==0.8.5
+langchain
+langchain-community
+langchain-core
+langchain-google-genai
+google-generativeai
 sqlparse==0.5.1
