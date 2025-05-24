@@ -4,3 +4,4 @@ pandas-profiling
 pycaret==3.3.2
 streamlit-extras==0.6.0
 autoviz
+fpdf
