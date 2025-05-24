@@ -1,6 +1,5 @@
 pydantic==1.10.12
 streamlit==1.45.0
-streamlit-profiling
 pandas-profiling
 pycaret==3.3.2
 streamlit-extras==0.6.0
