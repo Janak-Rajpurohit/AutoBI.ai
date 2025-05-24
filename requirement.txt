@@ -3,3 +3,5 @@ pydantic==1.10.12
 streamlit-shadcn-ui
 streamlit-profiling
 pandas-profiling
+streamlit-shadcn-ui
+pycaret==3.3.2
